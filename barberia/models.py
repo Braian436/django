@@ -72,6 +72,7 @@ class ServiciosTurnos(models.Model):
     id_servicio_turno = models.IntegerField(primary_key=True)
     orden = models.IntegerField(blank=True, null=True)
     id_servicio = models.ForeignKey(Servicios, models.DO_NOTHING, db_column='id_servicio', blank=True, null=True)
+    id_turno = models.ForeignKey(Turnos, models.DO_NOTHING, db_column='id_turno', blank=True, null=True)
 
     class Meta:
         managed = False
