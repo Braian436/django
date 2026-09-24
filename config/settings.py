@@ -89,11 +89,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB', 'proyecto_db'),
-        'USER': os.environ.get('POSTGRES_USER', 'proyecto_user'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'proyecto_pass'),
-        'HOST': os.environ.get('POSTGRES_HOST', 'db'),
-        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+        'NAME': os.environ.get('POSTGRES_DB', 'postgres'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT', '6543'),
+        'DISABLE_SERVER_SIDE_CURSORS': True,  # Indispensable para Transaction Pooler
     }
 }
 
