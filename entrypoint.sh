@@ -12,17 +12,17 @@ set -e
 echo ">> Esperando a que la base de datos este lista..."
 
 # Reintenta la conexion a Postgres hasta que responda
-while ! python -c "
+while ! python -c '
 import socket, os
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 try:
-    s.connect((os.environ.get(\x27POSTGRES_HOST\x27, \x27db\x27), int(os.environ.get(\x27POSTGRES_PORT\x27, 5432))))
+    s.connect((os.environ.get("POSTGRES_HOST", "db"), int(os.environ.get("POSTGRES_PORT", 5432))))
     s.close()
 except Exception:
     exit(1)
-" ; do
-  echo ">> Base de datos no disponible todavia, reintentando en 2s..."
-  sleep 2
+' ; do
+    echo ">> Base de datos no disponible todavia, reintentando en 2s..."
+    sleep 2
 done
 
 echo ">> Base de datos lista. Aplicando migraciones..."
