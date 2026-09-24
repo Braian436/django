@@ -80,3 +80,108 @@ class ServiciosTurnos(models.Model):
 
     def __str__(self):
         return f"ServicioTurno #{self.id_servicio_turno} (Orden {self.orden})"
+
+class RegistrosDeAsistencias(models.Model):
+    id_asistencia = models.AutoField(primary_key=True)
+    id_empleado = models.ForeignKey('Empleados', models.DO_NOTHING, db_column='id_empleado', blank=True, null=True)
+    fecha = models.DateField(blank=True, null=True)
+    hora_entrada = models.TimeField(blank=True, null=True)
+    hora_salida = models.TimeField(blank=True, null=True)
+    fecha_modificacion = models.DateTimeField(blank=True, null=True)
+    estado = models.CharField(max_length=20, blank=True, null=True)
+    observaciones = models.CharField(max_length=200, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'registros_de_asistencias'
+
+    def __str__(self):
+        return f"RegistroDeAsistencia #{self.id_asistencia} - {self.fecha}"
+
+
+class Roles(models.Model):
+    id_rol = models.IntegerField(primary_key=True)
+    nombre = models.CharField(max_length=20, blank=True, null=True)
+    descripcion = models.CharField(max_length=240, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'roles'
+
+    def __str__(self):
+        return self.nombre or f"Rol #{self.id_rol}"
+
+class Alquileres(models.Model):
+    id_alquiler = models.AutoField(primary_key=True)
+    id_empleado = models.ForeignKey('Empleados', models.DO_NOTHING, db_column='id_empleado', blank=True, null=True)
+    fecha_inicio = models.DateField(blank=True, null=True)
+    fecha_fin = models.DateField(blank=True, null=True)
+    importe_acordado = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    estado = models.CharField(max_length=20, blank=True, null=True)
+    observaciones = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'alquileres'
+
+    def __str__(self):
+        return f"Alquiler #{self.id_alquiler} - {self.id_empleado} ({self.fecha_inicio})"
+
+
+class Apertura(models.Model):
+    id_apertura = models.AutoField(primary_key=True)
+    id_empleado = models.ForeignKey('Empleados', models.DO_NOTHING, db_column='id_empleado', blank=True, null=True)
+    fecha_hora = models.DateTimeField(blank=True, null=True)
+    turno = models.CharField(max_length=10, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'apertura'
+
+    def __str__(self):
+        return f"Apertura #{self.id_apertura} - {self.id_empleado} ({self.fecha_hora})"
+
+
+class Descuentos(models.Model):
+    id_descuento = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=80, blank=True, null=True)
+    mayorista = models.BooleanField(blank=True, null=True)
+    cantidad = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'descuentos'
+
+    def __str__(self):
+        return self.nombre or f"Descuento #{self.id_descuento}"
+
+
+class Liquidaciones(models.Model):
+    id_liquidacion = models.AutoField(primary_key=True)
+    id_empleado = models.ForeignKey('Empleados', models.DO_NOTHING, db_column='id_empleado', blank=True, null=True)
+    fecha_inicio = models.DateTimeField(blank=True, null=True)
+    fecha_generacion = models.DateField(blank=True, null=True)
+    total_comision = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    total_a_pagar = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    estado = models.CharField(max_length=20, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'liquidaciones'
+
+    def __str__(self):
+        return f"Liquidación #{self.id_liquidacion} - {self.id_empleado} ({self.fecha_generacion})"
+
+
+class Categorias(models.Model):
+    id_categoria = models.IntegerField(primary_key=True)
+    nombre = models.CharField(max_length=80, blank=True, null=True)
+    descripcion = models.CharField(max_length=80, blank=True, null=True)
+    estado = models.BooleanField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'categorias'
+
+    def __str__(self):
+        return self.nombre or f"Categoría #{self.id_categoria}"
