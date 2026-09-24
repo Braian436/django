@@ -123,6 +123,40 @@ Para agregar un endpoint real sobre un modelo de su organización:
     ├── views.py
     └── urls.py
 ```
+## Flujo para sincronizar Nuevas Tablas de Supabase
+Cada vez que se cree o modifique una tabla directamente desde el panel de Supabase, se debe seguir este procedimiento para reflejarla en Django:
 
+1. Inspeccionar la base de datos con `inspectdb`
+   Ejecutar el comando de inspección indicando el nombre exacto de la tabla creada en Supabase:
+   ```
+   docker compose exec web python manage.py inspectdb nombre_de_tabla
+   ```
+2. Actualizar `barberia/models.py`
+   Copiar la clase generada en la terminal y pegarla al final de `barberia/models.py`, asegurándose de mantener `managed = False` y de incluir el método `__str__`:
+   ```
+   class NombreDeTabla(models.Model):
+    # Campos detectados automáticamente...
+
+    class Meta:
+        managed = False  # Indica a Django que la tabla es gestionada externamente por Supabase
+        db_table = 'nombre_de_tabla'
+
+    def __str__(self):
+        return f"Registro #{self.pk}"
+   ```
+3. Asentar las migraciones
+   Registrar internamente el modelo en el historial de Django sin alterar la estructura física de Supabase:
+   ```
+   docker compose exec web python manage.py makemigrations barberia
+   docker compose exec web python manage.py migrate
+   ```
+4. Habilitar la entidad en el Panel de Administracion
+   Abrir `barberia/admin.py`, importar el modelo y registrarlo:
+   ```
+   from .models import NombreDeTabla
+
+   admin.site.register(NombreDeTabla)
+   ```
+   
 ---
 Prof. Lic. Adrián Aguirre | ISDEM | Taller de Programación
