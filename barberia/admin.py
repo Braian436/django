@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import (Clientes, Empleados, Servicios, Turnos, ServiciosTurnos, RegistrosDeAsistencias, Roles, Alquileres, Apertura, Descuentos, Liquidaciones, Categorias, Cajas, PagosAlquileres, Stock, Productos, Marcas, Compras, Ordenes, PagosOrden, MovimientosCaja, DetalleServicios, DetalleProductos,
+from .models import (Clientes, Empleados, Servicios, Turnos, ServiciosTurnos, RegistrosDeAsistencias, Roles, Alquileres, Apertura, Descuentos, Liquidaciones, Categorias, Cajas, PagosAlquileres, Stock, Productos, Marcas, Compras, Ordenes, PagosOrden, MovimientosCaja, DetalleServicios, DetalleProductos, DetallesCompras
 )
 @admin.register(Clientes)
 class ClientesAdmin(admin.ModelAdmin):
@@ -104,3 +104,7 @@ class DetalleServiciosAdmin(admin.ModelAdmin):
 @admin.register(DetalleProductos)
 class DetalleProductosAdmin(admin.ModelAdmin):
     list_display = ('id_detalle_producto', 'id_orden', 'id_producto', 'cantidad', 'sub_total')
+
+@admin.register(DetallesCompras)
+class DetallesComprasAdmin(admin.ModelAdmin):
+    list_display = ('id_detalle_compra', 'id_compra', 'id_producto', 'cantidad', 'costo_unitario', 'sub_total')

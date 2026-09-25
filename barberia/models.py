@@ -380,3 +380,21 @@ class DetalleProductos(models.Model):
     # DetalleProductos
     def __str__(self):
         return f"Detalle producto #{self.id_detalle_producto} - {self.id_producto} x{self.cantidad}"
+
+
+
+class DetallesCompras(models.Model):
+    id_detalle_compra = models.AutoField(primary_key=True)
+    id_compra = models.ForeignKey('Compras', models.DO_NOTHING, db_column='id_compra', blank=True, null=True)
+    id_producto = models.ForeignKey('Productos', models.DO_NOTHING, db_column='id_producto', blank=True, null=True)
+    cantidad = models.IntegerField(blank=True, null=True)
+    descuento = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    costo_unitario = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    sub_total = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'detalles_compras'
+
+    def __str__(self):
+        return f"Detalle compra #{self.id_detalle_compra} - {self.id_producto} x{self.cantidad}"
