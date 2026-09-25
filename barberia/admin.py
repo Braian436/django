@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import (Clientes, Empleados, Servicios, Turnos, ServiciosTurnos, RegistrosDeAsistencias, Roles, Alquileres, Apertura, Descuentos, Liquidaciones, Categorias
+from .models import (Clientes, Empleados, Servicios, Turnos, ServiciosTurnos, RegistrosDeAsistencias, Roles, Alquileres, Apertura, Descuentos, Liquidaciones, Categorias, Cajas, PagosAlquileres, Stock, Productos, Marcas, Compras, Ordenes, PagosOrden, MovimientosCaja, DetalleServicios, DetalleProductos,
 )
 @admin.register(Clientes)
 class ClientesAdmin(admin.ModelAdmin):
@@ -58,3 +58,49 @@ class CategoriasAdmin(admin.ModelAdmin):
     list_display = ('id_categoria', 'nombre', 'descripcion', 'estado')
     list_filter = ('estado',)
     search_fields = ('nombre',)
+
+@admin.register(Cajas)
+class CajasAdmin(admin.ModelAdmin):
+    list_display = ('id_caja', 'id_apertura', 'saldo_incial', 'saldo_esperado', 'saldo_real', 'estado')
+
+@admin.register(PagosAlquileres)
+class PagosAlquileresAdmin(admin.ModelAdmin):
+    list_display = ('id_pago_alquiler', 'id_alquiler', 'fecha', 'importe', 'estado', 'medio_pago')
+
+@admin.register(Stock)
+class StockAdmin(admin.ModelAdmin):
+    list_display = ('id_stock', 'id_producto', 'cantidad_actual', 'stock_minimo', 'ultima_actualizacion')
+
+@admin.register(Productos)
+class ProductosAdmin(admin.ModelAdmin):
+    list_display = ('id_producto', 'nombre', 'id_marca', 'costo', 'estado')
+    search_fields = ('nombre',)
+
+@admin.register(Marcas)
+class MarcasAdmin(admin.ModelAdmin):
+    list_display = ('id_marca', 'nombre', 'id_categoria')
+
+@admin.register(Compras)
+class ComprasAdmin(admin.ModelAdmin):
+    list_display = ('id_compra', 'nro_ticket', 'subtotal', 'total', 'fecha')
+
+@admin.register(Ordenes)
+class OrdenesAdmin(admin.ModelAdmin):
+    list_display = ('id_orden', 'id_cliente', 'id_empleado', 'fecha_apertura', 'total_final')
+
+@admin.register(PagosOrden)
+class PagosOrdenAdmin(admin.ModelAdmin):
+    list_display = ('id_pago_orden', 'id_orden', 'fecha', 'importe', 'estado', 'medio_pago')
+
+@admin.register(MovimientosCaja)
+class MovimientosCajaAdmin(admin.ModelAdmin):
+    list_display = ('id_movimiento_caja', 'id_caja', 'tipo_movimiento', 'importe', 'fecha')
+    list_filter = ('tipo_movimiento',)
+
+@admin.register(DetalleServicios)
+class DetalleServiciosAdmin(admin.ModelAdmin):
+    list_display = ('id_detalle_servicio', 'id_orden', 'id_servicio', 'precio_actual', 'sub_total')
+
+@admin.register(DetalleProductos)
+class DetalleProductosAdmin(admin.ModelAdmin):
+    list_display = ('id_detalle_producto', 'id_orden', 'id_producto', 'cantidad', 'sub_total')
